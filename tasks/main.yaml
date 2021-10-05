@@ -5,7 +5,7 @@
 
 - name: ansible-role-ostack-component-installer | create the virtual environment for the component
   ansible.builtin.copy:
-    src: requirements.txt
+    src: keystone.train.txt
     dest: /etc/requirements.txt
 
 
