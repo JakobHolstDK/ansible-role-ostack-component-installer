@@ -6,7 +6,7 @@
 - name: ansible-role-ostack-component-installer | create the virtual environment for the component
   ansible.builtin.copy:
     src: /tmp/ostack/{{ ostack_version }}/{{ ostack_component }}.requirements.txt
-    dest: /etc/ostack/venv/{{ ostack_version }}/{{ ostack_component }}.requirements.txt
+    dest: /var/lib/openstack/venv/keystone/stable/train/requirements.txt
 
 
 - name: "ansible-role-ostack-component-installer |build_virtual_environments | Cleanup - Recursively remove directory ({{ ostack_component }} - {{ ostack_version }})"
@@ -30,6 +30,6 @@
 
 - name: " build_virtual_environments | Build a virtual environment for ({{ ostack_component }} - {{ ostack_version }})"
   pip:
-    requirements: '/etc/ostack/venv/{{ ostack_version }}/{{ ostack_component }}.requirements.txt'
+    requirements: /var/lib/openstack/venv/keystone/stable/train/requirements.txt
     virtualenv: '/var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_version }}/venv'
   become: True
