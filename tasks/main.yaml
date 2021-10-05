@@ -1,0 +1,4 @@
+---
+- name: ansible-role-ostack-component-installer | install prereq for redhat
+  import: redhat.yaml
+
