@@ -2,34 +2,50 @@
 - name: ansible-role-ostack-component-installer | install prereq for redhat
   include: redhat.yaml
 
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: /usr/local/bin/virtualenv
+    dest: /usr/local/sbin/virtualenv 
+    owner: root
+    group: root
+    state: link
+  become: True
 
 - name: ansible-role-ostack-component-installer | create the virtual environment for the component
   ansible.builtin.copy:
     src: keystone.train.txt
     dest: /etc/requirements.txt
 
-
 - name: "ansible-role-ostack-component-installer |build_virtual_environments | Cleanup - Recursively remove directory ({{ ostack_component }} - {{ ostack_version }})"
   ansible.builtin.file:
-    path: '/var/lib/ostack/virtualenvironments/{{ ostack_component }}/{{ ostack_version }}/venv'
+    path: '/var/lib/ostack/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/{{ ostack_release }}/venv'
     state: absent
 
 - name: " build_virtual_environments | Build a virtual environment face 1 init virtual env  ({{ ostack_component }} - {{ ostack_version }})"
   pip:
     name: pip
-    virtualenv: '/var/lib/ostack/virtualenvironments/{{ ostack_component }}/{{ ostack_version }}/venv'
+    virtualenv: '/var/lib/ostack/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/{{ ostack_release }}/venv'
     state: latest
   become: True
 
 - name: " build_virtual_environments | Build a virtual environment face 2 : update pip ({{ ostack_component }} - {{ ostack_version }})"
   pip:
     name: ['setuptools', 'setuptools-rust', 'wheel']
-    virtualenv: '/var/lib/ostack/virtualenvironments/{{ ostack_component }}/{{ ostack_version }}/venv/{{ ostack_component }}/{{ ostack_version }}/venv'
+    virtualenv: '/var/lib/ostack/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/{{ ostack_release }}/venv'
     state: latest
   become: True
 
+ - name: Download req file
+     become: yes
+     get_url:
+       url: http://{{ toolserver }}/REQUIREMENTS/{{ ostack_component }}.{{ ostack_codename }}.{{ ostack_release }}.requirements.txt
+       dest: /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt
+       mode: 0400
+       group: root
+       owner: root
+
 - name: " build_virtual_environments | Build a virtual environment for ({{ ostack_component }} - {{ ostack_version }})"
   pip:
-    requirements: /etc/requirements.txt
-    virtualenv: '/var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_version }}/venv'
+    requirements: /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt
+    virtualenv: '/var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/venv'
   become: True
