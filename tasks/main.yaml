@@ -51,9 +51,14 @@
     virtualenv: '/var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/venv'
   become: True
 
-
 - name: ' build_virtual_environments | clone git repo ({{ ostack_component }} - {{ ostack_version }})'
   ansible.builtin.git:
     repo: 'https://github.com/openstack/{{ ostack_component }}.git'
     dest: '/var/lib/checkout/{{ ostack_component }}/{{ ostack_codename }}'
     version: '{{ ostack_version }}'
+
+- name: "install the component in the {{ component }} in the environment"
+  ansible.builtin.command: /var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/venv/bin/pip install .
+  args:
+    chdir: '/var/lib/checkout/{{ ostack_component }}/{{ ostack_codename }}'
+  become: True
