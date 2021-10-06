@@ -5,7 +5,7 @@
 - name: Create a symbolic link
   ansible.builtin.file:
     src: /usr/local/bin/virtualenv
-    dest: /usr/local/sbin/virtualenv 
+    dest: /usr/sbin/virtualenv 
     owner: root
     group: root
     state: link
