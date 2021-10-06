@@ -50,3 +50,10 @@
     requirements: /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt
     virtualenv: '/var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/venv'
   become: True
+
+
+- name: ' build_virtual_environments | clone git repo ({{ ostack_component }} - {{ ostack_version }})'
+  ansible.builtin.git:
+    repo: 'https://github.com/openstack/{{ ostack_component }}.git'
+    dest: '/var/lib/checkout/{{ ostack_component }}/{{ ostack_codename }}'
+    version: '{{ ostack_version }}'
