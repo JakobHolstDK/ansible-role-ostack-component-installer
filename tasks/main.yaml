@@ -36,13 +36,13 @@
   become: True
 
  - name: Download req file
-     become: yes
-     get_url:
-       url: http://{{ toolserver }}/REQUIREMENTS/{{ ostack_component }}.{{ ostack_codename }}.{{ ostack_release }}.requirements.txt
-       dest: /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt
-       mode: 0400
-       group: root
-       owner: root
+   become: yes
+   get_url:
+     url: http://{{ toolserver }}/REQUIREMENTS/{{ ostack_component }}.{{ ostack_codename }}.{{ ostack_release }}.requirements.txt
+     dest: /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt
+     mode: 0400
+     group: root
+     owner: root
 
 - name: " build_virtual_environments | Build a virtual environment for ({{ ostack_component }} - {{ ostack_version }})"
   pip:
