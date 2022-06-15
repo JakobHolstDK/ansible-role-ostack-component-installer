@@ -44,14 +44,10 @@
 #    mode: 0400
 #    group: root
 #    owner: root
-- name: "Copy req file"
-  command: "cp /tmp/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirements.txt /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt"
-  become: True
-
 
 - name: " build_virtual_environments | Build a virtual environment for ({{ ostack_component }} - {{ ostack_version }})"
   pip:
-    requirements: /etc/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirement.txt
+    requirements: /tmp/{{ ostack_component}}.{{ ostack_codename }}.{{ ostack_release }}.requirements.txt
     virtualenv: '/var/lib/virtualenvironments/{{ ostack_component }}/{{ ostack_codename }}/venv'
   become: True
 
